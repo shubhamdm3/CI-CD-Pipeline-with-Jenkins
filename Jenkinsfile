@@ -121,3 +121,18 @@ pipeline {
         }
     }
 }
+stage('Test') {
+    steps {
+        echo 'Running unit tests...'
+        sh 'mvn test'  // Example for Java/Maven
+        echo 'Running integration tests...'
+        sh 'mvn verify -DskipUnitTests'
+        echo 'Running system tests...'
+        sh './run-system-tests.sh'
+    }
+    post {
+        always {
+            junit 'target/test-reports/*.xml'
+        }
+    }
+}
